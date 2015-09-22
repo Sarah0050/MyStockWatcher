@@ -30,8 +30,8 @@ public class greenDao {
 
     private static void createStockProperty() {
         stock.addIdProperty();
-        stock.addStringProperty("symbol").unique();
-        stock.addStringProperty("name").unique();
+        stock.addStringProperty("symbol").unique().notNull();
+        stock.addStringProperty("name").notNull();
         stock.addDoubleProperty("eps");
         stock.addDoubleProperty("yearHigh");
         stock.addDoubleProperty("yearLow");

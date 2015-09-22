@@ -10,12 +10,14 @@ import com.sarah.mystockwatcher.R;
 import com.sarah.mystockwatcher.Stock;
 import com.sarah.mystockwatcher.SyncDataCallback;
 import com.sarah.mystockwatcher.SyncStock;
+import com.sarah.mystockwatcher.manager.StockDataManager;
+import com.sarah.mystockwatcher.manager.UserDataManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private List<Stock> stocks;
     private ListView lvStock;
     private StockAdapter stockAdapter;
 
@@ -25,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         lvStock = (ListView) findViewById(R.id.lv_stock);
-        stockAdapter = new StockAdapter(this, new ArrayList<Stock>());
 
     }
 
@@ -33,8 +34,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        initListView();
+    }
+
+    private void initListView() {
+        stocks = StockDataManager.getInstance().queryAllStocks();
+        stockAdapter = new StockAdapter(this, stocks);
         lvStock.setAdapter(stockAdapter);
-        new SyncStock(callback).execute();
     }
 
     @Override
@@ -53,24 +60,47 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            EditSettingDialog editSettingDialog = new EditSettingDialog(this, editExpectedRatedCallback);
+            editSettingDialog.setCanceledOnTouchOutside(false);
+            editSettingDialog.show();
             return true;
         }
         if (id == R.id.action_add) {
+            AddStockDialog addStockDialog = new AddStockDialog(this, addStockCallback);
+            addStockDialog.setCanceledOnTouchOutside(false);
+            addStockDialog.show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private SyncDataCallback callback = new SyncDataCallback() {
+    private DialogCallback addStockCallback = new DialogCallback() {
+
         @Override
-        public void onSyncDataSuccess(List<Stock> stocks) {
-            updateView(stocks);
+        public void clickOk(String symbol) {
+            SyncStock syncStock = new SyncStock(syncDataCallback);
+            syncStock.execute(symbol);
         }
     };
 
-    private void updateView(List<Stock> stocks){
-        stockAdapter.updateView(stocks);
+    private DialogCallback editExpectedRatedCallback = new DialogCallback() {
+
+        @Override
+        public void clickOk(String expectedRate) {
+            UserDataManager.getInstance().storeUserExpectedRate(Double.valueOf(expectedRate) / 100);
+        }
+    };
+
+    private SyncDataCallback syncDataCallback = new SyncDataCallback() {
+        @Override
+        public void onSyncDataSuccess() {
+            updateView();
+        }
+    };
+
+    private void updateView() {
+        stockAdapter.updateView();
     }
 
 }

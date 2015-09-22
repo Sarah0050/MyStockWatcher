@@ -11,13 +11,13 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/expected_dialog_symbol_title"
+            android:id="@+id/add_dialog_symbol_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="股票代號" />
+            android:text="股票代號"/>
 
         <EditText
-            android:id="@+id/expected_dialog_et_symbol"
+            android:id="@+id/add_dialog_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -33,14 +33,14 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/expected_dialog_btn_cancel"
+            android:id="@+id/add_dialog_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel" />
 
 
         <TextView
-            android:id="@+id/expected_dialog_btn_ok"
+            android:id="@+id/add_dialog_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

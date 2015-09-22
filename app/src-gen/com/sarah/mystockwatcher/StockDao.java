@@ -50,8 +50,8 @@ public class StockDao extends AbstractDao<Stock, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"STOCK\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"SYMBOL\" TEXT UNIQUE ," + // 1: symbol
-                "\"NAME\" TEXT UNIQUE ," + // 2: name
+                "\"SYMBOL\" TEXT NOT NULL UNIQUE ," + // 1: symbol
+                "\"NAME\" TEXT NOT NULL ," + // 2: name
                 "\"EPS\" REAL," + // 3: eps
                 "\"YEAR_HIGH\" REAL," + // 4: yearHigh
                 "\"YEAR_LOW\" REAL," + // 5: yearLow
@@ -77,16 +77,8 @@ public class StockDao extends AbstractDao<Stock, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
- 
-        String symbol = entity.getSymbol();
-        if (symbol != null) {
-            stmt.bindString(2, symbol);
-        }
- 
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(3, name);
-        }
+        stmt.bindString(2, entity.getSymbol());
+        stmt.bindString(3, entity.getName());
  
         Double eps = entity.getEps();
         if (eps != null) {
@@ -140,8 +132,8 @@ public class StockDao extends AbstractDao<Stock, Long> {
     public Stock readEntity(Cursor cursor, int offset) {
         Stock entity = new Stock( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // symbol
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
+            cursor.getString(offset + 1), // symbol
+            cursor.getString(offset + 2), // name
             cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3), // eps
             cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4), // yearHigh
             cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // yearLow
@@ -158,8 +150,8 @@ public class StockDao extends AbstractDao<Stock, Long> {
     @Override
     public void readEntity(Cursor cursor, Stock entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setSymbol(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setSymbol(cursor.getString(offset + 1));
+        entity.setName(cursor.getString(offset + 2));
         entity.setEps(cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3));
         entity.setYearHigh(cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4));
         entity.setYearLow(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));

@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import com.sarah.mystockwatcher.R;
 import com.sarah.mystockwatcher.Stock;
-import com.sarah.mystockwatcher.manager.DataManager;
+import com.sarah.mystockwatcher.manager.StockDataManager;
+import com.sarah.mystockwatcher.manager.UserDataManager;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -58,14 +60,16 @@ public class StockAdapter extends BaseAdapter {
             viewHolder.tvSBid = (TextView) convertView.findViewById(R.id.tv_bid);
             viewHolder.tvBidGoal = (TextView) convertView.findViewById(R.id.tv_bid_goal);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         viewHolder.tvSymbol.setText(stocks.get(position).getSymbol());
         viewHolder.tvDividendAverage.setText(String.valueOf(stocks.get(position).getDividendAverage()));
         viewHolder.tvSBid.setText(String.valueOf(stocks.get(position).getOpen()));
-        double bidGoal = stocks.get(position).getDividendAverage() / DataManager.getInstance().querySetting().getExpectedRate();
+
+        DecimalFormat df = new DecimalFormat("#.00");
+        double bidGoal = Double.valueOf(df.format(stocks.get(position).getDividendAverage() / UserDataManager.getInstance().getUserSetting().getExpectedRate()));
         viewHolder.tvBidGoal.setText(String.valueOf(bidGoal));
 
 
@@ -80,8 +84,8 @@ public class StockAdapter extends BaseAdapter {
         TextView tvBidGoal;
     }
 
-    public void updateView(List<Stock> stocks){
-        this.stocks = stocks;
+    public void updateView() {
+        this.stocks = StockDataManager.getInstance().queryAllStocks();
         notifyDataSetChanged();
     }
 }

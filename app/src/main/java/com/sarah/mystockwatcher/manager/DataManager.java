@@ -55,35 +55,4 @@ public class DataManager extends Application {
         return daoSession;
     }
 
-    public void saveStocks(Stock stock) {
-        StockDao stockDao = getDaoSession(false).getStockDao();
-        stockDao.insertOrReplace(stock);
-
-    }
-
-    public void saveStocks(List<Stock> stocks) {
-        StockDao stockDao = getDaoSession(false).getStockDao();
-        for (Stock stock : stocks) {
-            stockDao.insertOrReplace(stock);
-        }
-    }
-
-    public Stock queryStocks(String symbol) {
-        StockDao stockDao = getDaoSession(false).getStockDao();
-        Stock stock = stockDao.queryBuilder().where(StockDao.Properties.Symbol.eq(symbol)).unique();
-        return stock;
-    }
-
-    public UserSetting querySetting() {
-        UserSettingDao userSettingDao = getDaoSession(false).getUserSettingDao();
-        UserSetting userSetting = userSettingDao.queryBuilder().unique();
-        return userSetting;
-    }
-
-    public void saveSetting(UserSetting setting) {
-        UserSettingDao userSettingDao = getDaoSession(false).getUserSettingDao();
-        userSettingDao.insertOrReplace(setting);
-    }
-
-
 }

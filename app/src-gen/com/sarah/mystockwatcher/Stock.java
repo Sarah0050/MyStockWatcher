@@ -7,7 +7,9 @@ package com.sarah.mystockwatcher;
 public class Stock {
 
     private Long id;
+    /** Not-null value. */
     private String symbol;
+    /** Not-null value. */
     private String name;
     private Double eps;
     private Double yearHigh;
@@ -47,18 +49,22 @@ public class Stock {
         this.id = id;
     }
 
+    /** Not-null value. */
     public String getSymbol() {
         return symbol;
     }
 
+    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
+    /** Not-null value. */
     public String getName() {
         return name;
     }
 
+    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setName(String name) {
         this.name = name;
     }

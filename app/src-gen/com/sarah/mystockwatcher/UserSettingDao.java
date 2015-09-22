@@ -41,7 +41,7 @@ public class UserSettingDao extends AbstractDao<UserSetting, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER_SETTING\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY UNIQUE ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"EXPECTED_RATE\" REAL," + // 1: expectedRate
                 "\"STOCK_SYMBOLS\" TEXT);"); // 2: stockSymbols
     }
